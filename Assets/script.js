@@ -8,13 +8,18 @@ var mainEl = document.createElement("main")
 var pEl = document.createElement("p")
 var startQuiz = document.createElement("button")
 var questionEl = document.createElement("h2")
-var answerEl = document.createElement("ul")
-var breakEl = document.createElement("br")
+var answerEl = document.createElement("div")
+var breakEl1 = document.createElement("br")
+var breakEl2 = document.createElement("br")
+var breakEl3 = document.createElement("br")
+
 var butOne = document.createElement("button")
 var butTwo = document.createElement("button")
 var butThree = document.createElement("button")
 var butFour = document.createElement("button")
 var timerEl = document.querySelector(".timer")
+var answers = document.querySelector(".answers")
+var quizButton = document.querySelectorAll(".buttonChoice")
 
 
 // Append the intro text to the page
@@ -43,14 +48,13 @@ var timer = 120
 function setTime() {
     // Sets interval in variable
     var timerInterval = setInterval(function() {
-      timer--;
-    
       if(timer === 0) {
         // Stops execution of action at set interval
         clearInterval(timerInterval);
       timerEl.innerText = "Times Up!"
       }
       else {
+        timer--;
         timerEl.innerText = "Time left: " + timer; 
       }
     }, 1000);
@@ -69,7 +73,7 @@ var questionOne = [
     {a: "all", v: true}
 ]
 var questionTwo = [
-  {q1: "How much wood could a wood chuck chuck?"},
+  {q1: "How much cookies do Cookie Monster"},
   {a: "Many", v: false},
   {a: "little", v: false},
   {a: "none", v: false},
@@ -94,6 +98,11 @@ var questionFour = [
 var questionBank = [questionOne, questionTwo, questionThree, questionFour]
 
 // Create function that appends text to the page
+
+function writeButton(num){
+
+}
+
 function question(num){
   
     h1El.innerText = ""
@@ -104,13 +113,35 @@ function question(num){
     butTwo.textContent = questionBank[num][2].a
     butThree.textContent = questionBank[num][3].a
     butFour.textContent = questionBank[num][4].a
+    butOne.value = 1
+    butTwo.value = 2
+    butThree.value = 3
+    butFour.value = 4
     answerEl.appendChild(butOne)
-    answerEl.appendChild(breakEl)
+    answerEl.appendChild(breakEl1)
     answerEl.appendChild(butTwo)
-    answerEl.appendChild(breakEl)
+    answerEl.appendChild(breakEl2)
     answerEl.appendChild(butThree)
-    answerEl.appendChild(breakEl)
+    answerEl.appendChild(breakEl3)
     answerEl.appendChild(butFour)
+    answerEl.setAttribute("class", "answers")
+    butOne.setAttribute("class", "buttonChoice")
+    butTwo.setAttribute("class", "buttonChoice")
+    butThree.setAttribute("class", "buttonChoice")
+    butFour.setAttribute("class", "buttonChoice")
+    answerEl.addEventListener("click", function(event){
+
+      var element = event.target;
+
+      if (questionBank[num][element.value].v === true) {
+        console.log("right answer")
+        num++
+      }
+      else if (questionBank[num][element.value].v === false) {
+        console.log("wrong answer")
+        timer -= 10
+      };
+    });
 }
 
 
