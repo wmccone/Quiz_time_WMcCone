@@ -20,6 +20,7 @@ var butFour = document.createElement("button")
 var timerEl = document.querySelector(".timer")
 var answers = document.querySelector(".answers")
 var quizButton = document.querySelectorAll(".buttonChoice")
+var score = 0
 
 
 // Append the intro text to the page
@@ -38,9 +39,11 @@ mainEl.setAttribute("style", "margin:auto; text-align:center;")
 timerEl.setAttribute("style", "margin:auto; float:right;")
 
 // Create a function that starts the quiz
+
 startQuiz.addEventListener("click", function(){
     setTime()
-    question(0)
+    setQuestions(0)
+    answerChoice(0)
     });
 // Create a function that runs the timer
 var timer = 120
@@ -51,7 +54,7 @@ function setTime() {
       if(timer === 0) {
         // Stops execution of action at set interval
         clearInterval(timerInterval);
-      timerEl.innerText = "Times Up!"
+      highScorePage()
       }
       else {
         timer--;
@@ -92,27 +95,23 @@ var questionFour = [
   {a: "Many", v: false},
   {a: "little", v: false},
   {a: "none", v: false},
-  {a: "all", v: true}
+  {a: "all", v: "end"}
 ]
 
 var questionBank = [questionOne, questionTwo, questionThree, questionFour]
 
-// Create function that appends text to the page
+// Create function that writes the question to the page
 
-function writeButton(num){
-
-}
-
-function question(num){
+function setQuestions(){
   
     h1El.innerText = ""
-    pEl.innerText = questionBank[num][0].q1
     mainEl.removeChild(startQuiz)
     mainEl.appendChild(answerEl)
-    butOne.textContent = questionBank[num][1].a
-    butTwo.textContent = questionBank[num][2].a
-    butThree.textContent = questionBank[num][3].a
-    butFour.textContent = questionBank[num][4].a
+    pEl.innerText = questionBank[0][0].q1
+    butOne.textContent = questionBank[0][1].a
+    butTwo.textContent = questionBank[0][2].a
+    butThree.textContent = questionBank[0][3].a
+    butFour.textContent = questionBank[0][4].a
     butOne.value = 1
     butTwo.value = 2
     butThree.value = 3
@@ -128,20 +127,54 @@ function question(num){
     butOne.setAttribute("class", "buttonChoice")
     butTwo.setAttribute("class", "buttonChoice")
     butThree.setAttribute("class", "buttonChoice")
-    butFour.setAttribute("class", "buttonChoice")
-    answerEl.addEventListener("click", function(event){
+    butFour.setAttribute("class", "buttonChoice") 
+};
+// Create a function that pushes a new question
+function nextQuestion(num) {
+  pEl.innerText = questionBank[num][0].q1
+  butOne.textContent = questionBank[num][1].a
+  butTwo.textContent = questionBank[num][2].a
+  butThree.textContent = questionBank[num][3].a
+  butFour.textContent = questionBank[num][4].a
+};
 
-      var element = event.target;
+function highScorePage(){
+  pEl.textContent = ""
+  timerEl.innerText = "Game Over!"
+  answerEl.removeChild(butOne)
+  answerEl.removeChild(butTwo)
+  answerEl.removeChild(butThree)
+  answerEl.removeChild(butFour)
+  mainEl.removeChild(answerEl)
+  pEl.textContent = "You made it to the end of the quiz you scored: " + score
 
-      if (questionBank[num][element.value].v === true) {
-        console.log("right answer")
-        num++
-      }
-      else if (questionBank[num][element.value].v === false) {
-        console.log("wrong answer")
-        timer -= 10
-      };
-    });
+
+}
+
+//Create a function that looks for choices
+function answerChoice(num){
+  answerEl.addEventListener("click", function(event){
+
+    var element = event.target;
+  
+    if (questionBank[num][element.value].v === true) {
+      console.log("right answer")
+      num++
+      score += 25
+      nextQuestion(num)
+    }
+    else if (questionBank[num][element.value].v === false) {
+      console.log("wrong answer")
+      timer -= 10
+    }
+
+    else {
+      score += 25
+      score += timer
+      highScorePage()
+    };
+  });
+  return num
 }
 
 
