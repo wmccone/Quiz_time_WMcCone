@@ -5,10 +5,13 @@
 //Intro Elements
 var body = document.body
 var h1El = document.createElement("h1");
+var filler1 = document.createElement("div")
 var mainEl = document.createElement("main");
+var filler2 = document.createElement("div")
 var pEl = document.createElement("p");
 var startQuiz = document.createElement("button");
 var timerEl = document.querySelector(".timer");
+var hsPage = document.querySelector("#highscore-page")
 
 //Question Elements
 var questionEl = document.createElement("h2");
@@ -39,16 +42,22 @@ var quizEnd = false
 
 // Append the intro text to the page
 
+
 h1El.textContent = "The Code Quiz Y'all"
 pEl.textContent = "Hey y'all welcome to my code quiz for Homework 4, you will have 120 seconds to complete the quiz. Every wrong answer will remove 10 seconds from the clock. Every right answer will add 10 points to your score. All remaining time will convert to points and added to your score at the end. You may click the start button to begin"
 startQuiz.textContent = "Start the ordeal"
 
 body.appendChild(h1El)
+body.appendChild(filler1)
 body.appendChild(mainEl)
+body.appendChild(filler2)
 mainEl.appendChild(pEl)
 mainEl.appendChild(startQuiz)
 
 h1El.setAttribute("style", "margin:auto; text-align:center;")
+filler1.setAttribute("class", "col-md-4")
+mainEl.setAttribute("class", "col-md-4")
+filler2.setAttribute("class", "col-md-4")
 mainEl.setAttribute("style", "margin:auto; text-align:center;")
 timerEl.setAttribute("style", "margin:auto; float:right;")
 
@@ -84,33 +93,33 @@ startQuiz.addEventListener("click", function () {
 // Create the question bank
 
 var questionOne = [
-  { q1: "How much wood could a wood chuck chuck?" },
-  { a: "Many", v: false },
-  { a: "little", v: false },
-  { a: "none", v: false },
-  { a: "all", v: true }
+  { q1: "What JavaScript Function allows you to add a pre-determined element to a page?" },
+  { a: "addElement", v: false },
+  { a: "setElement", v: false },
+  { a: "createChild", v: false },
+  { a: "appendChild", v: true }
 ]
 var questionTwo = [
-  { q1: "How much cookies do Cookie Monster" },
-  { a: "Many", v: false },
-  { a: "little", v: false },
-  { a: "none", v: false },
-  { a: "all", v: true }
+  { q1: "What does the term DOM mean in the context of JavaScript?" },
+  { a: "Do-Over Metrics", v: false },
+  { a: "Dominic Toretto", v: false },
+  { a: "Document Object Model", v: true },
+  { a: "Domino's Original Marinara", v: false }
 ]
 
 var questionThree = [
-  { q1: "How much wood could a wood chuck chuck?" },
-  { a: "Many", v: false },
-  { a: "little", v: false },
-  { a: "none", v: false },
-  { a: "all", v: true }
+  { q1: "What does API stand for?" },
+  { a: "Apple Pie Interest", v: false },
+  { a: "Application Programming Interface", v: true },
+  { a: "Alpine Pool Insurance", v: false },
+  { a: "Are Pigs Intelligent?", v: false }
 ]
 var questionFour = [
-  { q1: "How much wood could a wood chuck chuck?" },
-  { a: "Many", v: false },
-  { a: "little", v: false },
-  { a: "none", v: false },
-  { a: "all", v: "end" }
+  { q1: "How much wood could a wood chuck chuck if a Wood Chuck could chuck wood?" },
+  { a: "Many Woods", v: false },
+  { a: "Little Woods", v: false },
+  { a: "No Woods", v: false },
+  { a: "All Woods", v: "end" }
 ]
 
 var questionBank = [questionOne, questionTwo, questionThree, questionFour]
@@ -233,6 +242,7 @@ function highScorePage() {
 }
 
 // Create a function that records the score in local storage
+// Create a function that allows the User to save their name and highscore
 
 function renderHighScores() {
 highScoreList.innerHTML = ""
@@ -255,5 +265,9 @@ function storeHighScore() {
 }
 
 
+hsPage.addEventListener("click", function(){
+  setQuestions()
+  highScorePage()
+});
 
-// Create a function that allows the User to save their name and highscore
+
