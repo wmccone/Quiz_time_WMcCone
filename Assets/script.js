@@ -29,11 +29,13 @@ var highScoreForm = document.createElement("form");
 var submitHighScore = document.createElement("button");
 var nameInput = document.createElement("input");
 submitHighScore.textContent = "Submit your Name!"
-var highScoreList = document.createElement("ul");
-var nameListener = document.querySelector("#name-input");
+var highScoreList = document.createElement("ol");
+
 
 var score = 0
 
+var timerInterval;
+var quizEnd = false
 
 // Append the intro text to the page
 
@@ -62,11 +64,12 @@ var timer = 120
 
 function setTime() {
   // Sets interval in variable
-  var timerInterval = setInterval(function () {
-    if (timer === 0) {
+  timerInterval = setInterval(function () {
+    if (timer === 0 || quizEnd) {
       // Stops execution of action at set interval
       clearInterval(timerInterval);
-      highScorePage()
+
+      // highScorePage()
     }
     else {
       timer--;
@@ -177,9 +180,11 @@ function answerChoice(num) {
   });
   return num
 }
+var scoreList = JSON.parse(localStorage.getItem("scoreList")) || []
 
 // Create a function that ends the game and directs a user to the High Score page
 function highScorePage() {
+  quizEnd = true
   pEl.textContent = ""
   timerEl.innerText = "Game Over!"
   answerEl.removeChild(butOne)
@@ -193,20 +198,30 @@ function highScorePage() {
   nameInput.setAttribute("type", "text")
   nameInput.setAttribute("name", "name")
   nameInput.setAttribute("placeholder", "Who are you?")
-  submitHighScore.setAttribute("type","submit")
-  submitHighScore.setAttribute("value","submit")
+  nameInput.setAttribute("id", "name-input")
+  highScoreForm.setAttribute("type","submit")
+  highScoreForm.setAttribute("value","submit")
   mainEl.appendChild(highScoreForm)
   mainEl.appendChild(nameInput)
   mainEl.appendChild(submitHighScore)
-  submitHighScore.addEventListener("submit", function(event){
+  mainEl.appendChild(highScoreList)
+  var nameListener = document.querySelector("#name-input");
+  renderHighScores()
+  submitHighScore.addEventListener("click", function(event){
     event.preventDefault();
+    console.log("Hello")
     var nameText = nameListener.value.trim();
 
     if (nameText === ""){
       return;
     }
-
-    var scoreRecord = nameText + ": "+ score
+    console.log(nameText)
+    var scoreRecord = {
+      
+      name: nameText,
+      score: score
+    
+    }
     scoreList.push(scoreRecord);
     nameListener.value = ""
 
@@ -217,33 +232,28 @@ function highScorePage() {
 
 }
 
-// Create a function that records the score
+// Create a function that records the score in local storage
+
 function renderHighScores() {
-
-  var scoreList = []
-
+highScoreList.innerHTML = ""
+scoreList.sort(function(a,b){
+  return b.score - a.score
+})
   for (var i = 0; i < scoreList.length; i++) {
     var scores = scoreList[i];
 
     var li = document.createElement("li");
-    li.textContent = scores
-    li.setAttribute("highscore-index", i);
+    li.textContent = scores.name + ": " + scores.score
 
     highScoreList.appendChild(li)
   };
 }
 
-function init() {
-  var storedScores = JSON.parse(localStorage.getItem("scoreList"));
-
-  if (storedScores !== null) {
-    scoreList = storedScores;
-  }
-  renderHighScores();
-}
 
 function storeHighScore() {
   localStorage.setItem("scoreList", JSON.stringify(scoreList));
 }
+
+
 
 // Create a function that allows the User to save their name and highscore
