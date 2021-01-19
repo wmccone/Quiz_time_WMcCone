@@ -115,7 +115,7 @@ var questionThree = [
   { a: "Are Pigs Intelligent?", v: false }
 ]
 var questionFour = [
-  { q1: "How much wood could a wood chuck chuck if a Wood Chuck could chuck wood?" },
+  { q1: "How much Wood could a Wood Chuck chuck if a Wood Chuck could chuck Wood?" },
   { a: "Many Woods", v: false },
   { a: "Little Woods", v: false },
   { a: "No Woods", v: false },
