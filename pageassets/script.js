@@ -41,6 +41,7 @@ var nameInput = document.createElement("input");
 submitHighScore.textContent = "Submit your Name!";
 var highScoreList = document.createElement("ol");
 var clearScoreButton = document.createElement("button");
+clearScoreButton.textContent = "Clear Scores"
 
 var score = 0;
 
@@ -208,7 +209,7 @@ function answerChoice(num) {
     else {
       score += 25;
       score += timer;
-      timer = 1;
+      timer = 0;
     };
   });
   return num
@@ -238,7 +239,9 @@ function highScorePage() {
   mainEl.appendChild(highScoreForm);
   mainEl.appendChild(nameInput);
   mainEl.appendChild(submitHighScore);
+  mainEl.appendChild(clearScoreButton)
   mainEl.appendChild(highScoreList);
+
   var nameListener = document.querySelector("#name-input");
   renderHighScores();
   submitHighScore.addEventListener("click", function(event){
@@ -262,6 +265,11 @@ function highScorePage() {
 
   });
 
+  clearScoreButton.addEventListener("click", function(event){
+    event.preventDefault();
+    clearHighScores();
+  })
+
 }
 
 // Create a function that renders high scores on the page with higher scores at the top
@@ -278,6 +286,15 @@ scoreList.sort(function(a,b){
 
     highScoreList.appendChild(li);
   };
+}
+
+function clearHighScores(){
+  for (var i = 0; i < scoreList.length; i++) {
+    var li = document.querySelector("li");
+    highScoreList.removeChild(li);
+  }
+  localStorage.clear();
+  scoreList = []
 }
 
 // Create a function that allows the User to save their name and highscore
