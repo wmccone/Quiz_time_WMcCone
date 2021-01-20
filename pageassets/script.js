@@ -4,14 +4,20 @@
 
 //Intro Elements
 var body = document.body
+var header = document.querySelector("header")
+var viewHighScoreButton = document.createElement("button")
 var h1El = document.createElement("h1");
 var filler1 = document.createElement("div")
 var mainEl = document.createElement("main");
 var filler2 = document.createElement("div")
+var rulesEl = document.createElement("ol")
+var rule1 = document.createElement("li")
+var rule2 = document.createElement("li")
+var rule3 = document.createElement("li")
+var rule4 = document.createElement("li")
 var pEl = document.createElement("p");
 var startQuiz = document.createElement("button");
 var timerEl = document.querySelector(".timer");
-var hsPage = document.querySelector("#highscore-page")
 
 //Question Elements
 var questionEl = document.createElement("h2");
@@ -24,6 +30,7 @@ var butOne = document.createElement("button");
 var butTwo = document.createElement("button");
 var butThree = document.createElement("button");
 var butFour = document.createElement("button");
+var answerResult = document.createElement("h2")
 var answers = document.querySelector(".answers");
 
 //Score Elements
@@ -44,23 +51,38 @@ var quizEnd = false
 
 
 h1El.textContent = "The Code Quiz Y'all"
-pEl.textContent = "Hey y'all welcome to my code quiz for Homework 4, you will have 120 seconds to complete the quiz. Every wrong answer will remove 10 seconds from the clock. Every right answer will add 10 points to your score. All remaining time will convert to points and added to your score at the end. You may click the start button to begin"
+pEl.textContent = "Hey y'all welcome to my code quiz for Homework 4."
+rule1.textContent = "You will have 60 seconds to complete the quiz."
+rule2.textContent = "Every wrong answer will remove 10 seconds from the clock."
+rule3.textContent = "Every right answer will add 10 points to your score."
+rule4.textContent = "All remaining time will convert to points and added to your score at the end."
 startQuiz.textContent = "Start the ordeal"
+viewHighScoreButton.textContent = "View High Scores"
 
-body.appendChild(h1El)
+header.appendChild(viewHighScoreButton)
 body.appendChild(filler1)
 body.appendChild(mainEl)
 body.appendChild(filler2)
+mainEl.appendChild(h1El)
 mainEl.appendChild(pEl)
+mainEl.appendChild(rulesEl)
+rulesEl.appendChild(rule1)
+rulesEl.appendChild(rule2)
+rulesEl.appendChild(rule3)
+rulesEl.appendChild(rule4)
 mainEl.appendChild(startQuiz)
 
-h1El.setAttribute("style", "margin:auto; text-align:center;")
+viewHighScoreButton.setAttribute("id", "highscore-page")
+viewHighScoreButton.setAttribute("class", "btn btn-primary btn-sm")
+var hsPage = document.querySelector("#highscore-page")
+h1El.setAttribute("style", "text-align:center")
 filler1.setAttribute("class", "col-md-4")
 mainEl.setAttribute("class", "col-md-4")
 filler2.setAttribute("class", "col-md-4")
-mainEl.setAttribute("style", "margin:auto; text-align:center;")
-timerEl.setAttribute("style", "margin:auto; float:right;")
-
+mainEl.setAttribute("style", "margin:auto; text-align:center; font-size: 18px; font-family: Roboto")
+rulesEl.setAttribute("style", "margin:auto; text-align:left; font-size: 18px; font-family: Roboto")
+timerEl.setAttribute("style", "margin:auto; float:right; font-size: 24px; font-family: Audiowide")
+startQuiz.setAttribute("class", "btn btn-danger btn-lg")
 // Create a function that starts the quiz
 
 startQuiz.addEventListener("click", function () {
@@ -69,18 +91,18 @@ startQuiz.addEventListener("click", function () {
   answerChoice(0)
 });
 // Create a function that runs the timer
-var timer = 120
+var timer = 60
 
 function setTime() {
   // Sets interval in variable
   timerInterval = setInterval(function () {
-    if (timer === 0 || quizEnd) {
+    if (timer === 0) {
       // Stops execution of action at set interval
+      highScorePage()
       clearInterval(timerInterval);
-
-      // highScorePage()
+     
     }
-    else {
+    if (timer > 0) {
       timer--;
       timerEl.innerText = "Time left: " + timer;
     }
@@ -109,17 +131,17 @@ var questionTwo = [
 
 var questionThree = [
   { q1: "What does API stand for?" },
-  { a: "Apple Pie Interest", v: false },
+  { a: "Apple Pie Incorperated", v: false },
   { a: "Application Programming Interface", v: true },
   { a: "Alpine Pool Insurance", v: false },
   { a: "Are Pigs Intelligent?", v: false }
 ]
 var questionFour = [
-  { q1: "How much Wood could a Wood Chuck chuck if a Wood Chuck could chuck Wood?" },
-  { a: "Many Woods", v: false },
-  { a: "Little Woods", v: false },
+  { q1: "How much wood would a Wood-Chuck chuck if a Wood-Chuck could chuck wood?" },
+  { a: "Many of the Woods", v: false },
+  { a: "Little of the Woods", v: false },
   { a: "No Woods", v: false },
-  { a: "All Woods", v: "end" }
+  { a: "All the Woods", v: "end" }
 ]
 
 var questionBank = [questionOne, questionTwo, questionThree, questionFour]
@@ -129,13 +151,16 @@ var questionBank = [questionOne, questionTwo, questionThree, questionFour]
 function setQuestions() {
 
   h1El.innerText = ""
+  header.removeChild(viewHighScoreButton)
   mainEl.removeChild(startQuiz)
+  mainEl.removeChild(rulesEl)
   mainEl.appendChild(answerEl)
   pEl.innerText = questionBank[0][0].q1
   butOne.textContent = questionBank[0][1].a
   butTwo.textContent = questionBank[0][2].a
   butThree.textContent = questionBank[0][3].a
   butFour.textContent = questionBank[0][4].a
+  answerResult.textContent = ""
   butOne.value = 1
   butTwo.value = 2
   butThree.value = 3
@@ -147,11 +172,13 @@ function setQuestions() {
   answerEl.appendChild(butThree)
   answerEl.appendChild(breakEl3)
   answerEl.appendChild(butFour)
-  answerEl.setAttribute("class", "answers")
+  answerEl.appendChild(answerResult)
+  answerEl.setAttribute("class", "answers d-grid gap-2")
   butOne.setAttribute("class", "buttonChoice")
   butTwo.setAttribute("class", "buttonChoice")
   butThree.setAttribute("class", "buttonChoice")
   butFour.setAttribute("class", "buttonChoice")
+  answerResult.setAttribute("style", "text-align:center; font-family:Audiowide")
 };
 // Create a function that pushes a new question
 function nextQuestion(num) {
@@ -160,6 +187,7 @@ function nextQuestion(num) {
   butTwo.textContent = questionBank[num][2].a
   butThree.textContent = questionBank[num][3].a
   butFour.textContent = questionBank[num][4].a
+  answerResult.textContent = "Right!"
 };
 
 
@@ -178,13 +206,14 @@ function answerChoice(num) {
     }
     else if (questionBank[num][element.value].v === false) {
       console.log("wrong answer");
+      answerResult.textContent = "WRONG!"
       timer -= 10;
     }
 
     else {
       score += 25;
       score += timer;
-      highScorePage();
+      timer = 1
     };
   });
   return num
@@ -193,7 +222,8 @@ var scoreList = JSON.parse(localStorage.getItem("scoreList")) || []
 
 // Create a function that ends the game and directs a user to the High Score page
 function highScorePage() {
-  quizEnd = true
+  // quizEnd = true
+  timer = null
   pEl.textContent = ""
   timerEl.innerText = "Game Over!"
   answerEl.removeChild(butOne)
@@ -265,9 +295,14 @@ function storeHighScore() {
 }
 
 
+
 hsPage.addEventListener("click", function(){
   setQuestions()
   highScorePage()
+  pEl.textContent = "High Scores"
+  mainEl.removeChild(highScoreForm)
+  mainEl.removeChild(nameInput)
+  mainEl.removeChild(submitHighScore)
 });
 
 
