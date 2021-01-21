@@ -42,6 +42,8 @@ submitHighScore.textContent = "Submit your Name!";
 var highScoreList = document.createElement("ol");
 var clearScoreButton = document.createElement("button");
 clearScoreButton.textContent = "Clear Scores"
+var refreshButton = document.createElement("button")
+refreshButton.textContent = "Start Over"
 
 var score = 0;
 
@@ -236,14 +238,16 @@ function highScorePage() {
   nameInput.setAttribute("id", "name-input");
   highScoreForm.setAttribute("type","submit");
   highScoreForm.setAttribute("value","submit");
+  header.appendChild(refreshButton)
   mainEl.appendChild(highScoreForm);
   mainEl.appendChild(nameInput);
   mainEl.appendChild(submitHighScore);
   mainEl.appendChild(clearScoreButton)
   mainEl.appendChild(highScoreList);
-
   var nameListener = document.querySelector("#name-input");
   renderHighScores();
+
+  // create a button for submitting your name to the page
   submitHighScore.addEventListener("click", function(event){
     event.preventDefault();
     var nameText = nameListener.value.trim();
@@ -268,7 +272,11 @@ function highScorePage() {
   clearScoreButton.addEventListener("click", function(event){
     event.preventDefault();
     clearHighScores();
-  })
+  });
+
+  refreshButton.addEventListener("click", function(){
+    location.reload();
+  });
 
 }
 
